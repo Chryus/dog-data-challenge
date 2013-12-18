@@ -20,31 +20,53 @@ class Dog
     DB
   end
 
-  def self.find_dog(id)
-    self.db.query("SELECT * 
+  def self.find_dog_by_id(id)
+    self.db.query("
+      SELECT * 
       FROM dogs
-      WHERE id = #{id}")
+      WHERE id = #{id}
+      ")
+      my_dogs = []
+      temp = Dog.new(result["name"])
+  end
+
+  def self.find_dog_by_name(name)
+    self.db.query("
+      SELECT * 
+      FROM dogs
+      WHERE name = '#{name}'
+      ")
   end
 
   def save_dog
-    self.db.query("INSERT INTO dogs(name, color)
+    results = self.db.query("INSERT INTO dogs(name, color)
       VALUES('#{self.name}', '#{self.color}')"
       )
   end
 
-  def self.change_dog(name, color, id)
+  def change_dog(name, color, id)
     self.db.query("UPDATE dogs
       SET name = '#{name}', color = '#{color}'
       WHERE id = #{id}
       ")
   end
 
+  def self.new_from_db row
+    dog = Dog.new(row["name"], row["color"])
+    dog.id = row["id"]
+    dog  
+  end 
+
+  def mark_as_saved!
+      self.id = self.db.last_id if self.db.last_id > 0
+  end
+
 end
 
-#dog = Dog.new("tucker", "blue")
-#dog.save_dog
+dog = Dog.new("tucker", "blue")
+dog.save_dog
 puts Dog.find_dog(1).first
-Dog.change_dog("Betty", "blue", 1)
+dog.change_dog("Marco", "red", 1)
 #{"id"=>1, "name"=>"tucker", "color"=>"blue"}
 #debugger
 #puts 'hi'
