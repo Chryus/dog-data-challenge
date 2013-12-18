@@ -32,11 +32,10 @@ class Dog
       )
   end
 
-  def change_dog(name, color)
+  def self.change_dog(name, color, id)
     self.db.query("UPDATE dogs
-      UPDATE dogs
-      SET name = '#{@name}'
-      SET color = '#{@color}'
+      SET name = '#{name}', color = '#{color}'
+      WHERE id = #{id}
       ")
   end
 
@@ -45,6 +44,7 @@ end
 #dog = Dog.new("tucker", "blue")
 #dog.save_dog
 puts Dog.find_dog(1).first
+Dog.change_dog("Betty", "blue", 1)
 #{"id"=>1, "name"=>"tucker", "color"=>"blue"}
 #debugger
 #puts 'hi'
