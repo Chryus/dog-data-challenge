@@ -1,14 +1,53 @@
 require 'mysql2'
+require 'debugger'
 
 class Dog
-  
-  @@db = Mysql2::Client.new(:host => "localhost", :username => "root", :database => "dogs")
+
+  DB = Mysql2::Client.new(:host => "localhost", :username => "root", :database => "dogs")
+
+  attr_accessor :name, :color
+
+  def initialize(name, color)
+    @name = name
+    @color = color
+  end
+
+  def self.db
+    DB
+  end
+
+  def db
+    DB
+  end
+
+  def self.find_dog(id)
+    self.db.query("SELECT * 
+      FROM dogs
+      WHERE id = #{id}")
+  end
+
+  def save_dog
+    self.db.query("INSERT INTO dogs(name, color)
+      VALUES('#{self.name}', '#{self.color}')"
+      )
+  end
+
+  def change_dog(name, color)
+    self.db.query("UPDATE dogs
+      UPDATE dogs
+      SET name = '#{@name}'
+      SET color = '#{@color}'
+      ")
+  end
 
 end
 
-dog = Dog.find(10)
-debugger
-puts 'hi'
+#dog = Dog.new("tucker", "blue")
+#dog.save_dog
+puts Dog.find_dog(1).first
+#{"id"=>1, "name"=>"tucker", "color"=>"blue"}
+#debugger
+#puts 'hi'
 
   # color, name, id
   # db

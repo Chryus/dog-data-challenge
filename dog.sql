@@ -1,0 +1,5 @@
+CREATE TABLE dogs(
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  name TEXT,
+  color TEXT
+);
